@@ -1,0 +1,16 @@
+#first time setup instructions
+    #update apt
+    sudo apt update
+    #install python3.14 and the venv module
+    sudo apt install python3.14 python3.14-venv python3.14-dev -y
+
+    # Create the virtual environment folder named 'venv'
+    python3.14 -m venv venv
+
+    # Activate the virtual environment
+    source venv/bin/activate
+#==============================================================    
+#activate the virtual environment
+    source venv/bin/activate
+    #install the dependencies
+    pip install flask
