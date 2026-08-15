@@ -8,8 +8,6 @@
         @layer base {
             html, body { margin: 0; padding: 0; }
             body { overscroll-behavior: none; }
-            main > :first-child { margin-top: 0 !important; }
-            main > :last-child { margin-bottom: 0 !important; }
         }
         ::-webkit-scrollbar { display: none; }
     </style>
@@ -58,170 +56,276 @@
         }
     </script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;family=Space+Grotesk:wght@100..900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=Plus+Jakarta+Sans:wght@100..900&family=Space+Grotesk:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
 <body class="bg-background font-body-md text-on-background" data-mode="connect">
 
-    <header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl">
+    <header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-surface-variant/50">
         <div class="h-20 w-full px-container-margin flex items-center justify-between gap-gutter">
             <div class="flex items-center gap-stack-md">
-                <div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-on-primary-container"><br></span>
+                <div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(255,0,128,0.4)]">
+                    <span class="material-symbols-outlined text-on-primary-container">graphic_eq</span>
                 </div>
                 <div class="relative hidden md:block w-72">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
-                    <input class="w-full bg-surface-container-low rounded-full py-2 pl-10 pr-4 text-body-sm text-on-surface focus:outline-none focus:border-primary transition-colors" placeholder="Search events..." type="text">
+                    <input class="w-full bg-surface-container-low rounded-full py-2 pl-10 pr-4 text-body-sm text-on-surface focus:outline-none focus:border-primary transition-colors" placeholder="Buscar eventos, artistas ou amigos..." type="text">
                 </div>
             </div>
             <nav class="flex items-center gap-gutter" data-active-classes="text-primary font-bold">
-                <a aria-current="page" class="transition-colors text-primary font-bold" data-path="explore" href="#"><br></a>
-                <a class="font-button-text text-button-text text-on-surface-variant hover:text-on-surface transition-colors" data-path="calendar" href="#">Calendar</a>
-                <a class="font-button-text text-button-text text-on-surface-variant hover:text-on-surface transition-colors" data-path="venues" href="#"><br></a>
+                <a aria-current="page" class="transition-colors text-primary font-bold" data-path="explore" href="#">Descobrir</a>
+                <a class="font-button-text text-button-text text-on-surface-variant hover:text-on-surface transition-colors" data-path="calendar" href="#">Minha Agenda</a>
             </nav>
             <div class="flex items-center gap-gutter">
                 <button class="text-on-surface-variant hover:text-on-surface transition-colors shrink-0 md:hidden">
                     <span class="material-symbols-outlined">search</span>
                 </button>
-                <button class="text-on-surface-variant hover:text-on-surface transition-colors shrink-0">
+                <button class="text-on-surface-variant hover:text-on-surface transition-colors shrink-0 relative">
                     <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full"></span>
                 </button>
-                <a href="/logout" title="Sair do Spotify" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-primary-fixed transition-colors">
+                <a href="/logout" title="Sair do Spotify" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-primary-fixed transition-colors shadow-md">
                     <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
                 </a>
             </div>
         </div>
     </header>
 
-    <main class="w-full pt-20 bg-background">
-        <div class="flex flex-col w-full font-body-md text-on-background bg-background pb-stack-lg">
+    <div class="flex w-full min-h-screen pt-20 bg-background">
+        
+        <!-- SIDEBAR ESQUERDA -->
+        <aside class="w-72 shrink-0 hidden lg:flex flex-col gap-8 px-6 py-8 border-r border-surface-variant sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto bg-surface-container-lowest">
             
-            <div class="relative w-full max-w-[1440px] mx-auto px-container-margin pt-stack-md flex flex-col items-center">
-                <div class="w-full text-center mb-stack-md">
-                    <h1 class="font-headline-xl text-headline-xl text-primary drop-shadow-[0_0_15px_rgba(255,0,128,0.3)]">Featured Events</h1>
-                    <p class="font-body-md text-body-md text-on-surface-variant mt-base">Discover the hottest music festivals and raves.</p>
-                </div>
-                
-                <div class="relative w-full h-[500px] flex justify-center items-center overflow-hidden mb-stack-lg" id="carousel-container">
-                    <button class="absolute left-0 z-20 w-12 h-12 bg-primary/20 backdrop-blur-md rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all shadow-[0_0_15px_rgba(255,0,128,0.4)]" onclick="rotateCarousel(-1)">
-                        <span class="material-symbols-outlined">chevron_left</span>
-                    </button>
-                    
-                    <div class="relative w-[800px] h-[400px] perspective-[1200px]" id="carousel">
-                        <div class="carousel-item absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-out origin-center" data-index="0" style="transform: translateX(-300px) scale(0.8) translateZ(-100px); opacity: 0.6; z-index: 1;">
-                            <div class="w-full h-full rounded-xl overflow-hidden relative group">
-                                <img class="w-full h-full object-cover" data-alt="A vibrant, high-energy crowd at a neon-lit rave, lasers cutting through fog, deep blacks and vivid #ff0080 pinks, high contrast, cinematic photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCielBd9BS8b_Fikn_HjoBzdLdgcC9qZFo0hrlppfIX1eVrKpp4QHUEZfaz9wQoyWHwZI-STXn_WVR6zM5LAkISrFQBK7G9pr64B6YLDM5vHPOR9VAFrvmBZv6ouaLw0joElnGa2W57ojvpbkZ2TkXa5MRQWawMZgBzESlWzOQwcgxRTh03iQGxMbJ3MCaQGoJDkgeLYPqXVFgNzlzlTpMBGUFRTyJrPmnttHuNPXkoaUzh6-2SaxaSrA">
-                                <div class="absolute inset-0 bg-surface/40 group-hover:bg-transparent transition-colors"></div>
-                            </div>
+            <div>
+                <h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-primary">mic</span> Sugestões de Artistas
+                </h3>
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between group cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=150&q=80" class="w-10 h-10 rounded-full object-cover">
+                            <span class="font-button-text text-[14px] text-on-surface group-hover:text-primary transition-colors">Daft Punk</span>
                         </div>
-                        <div class="carousel-item absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-out origin-center" data-index="1" style="transform: translateX(0px) scale(1) translateZ(0px); opacity: 1; z-index: 2; box-shadow: 0 0 40px rgba(255,0,128,0.2);">
-                            <div class="w-full h-full rounded-xl overflow-hidden relative group cursor-pointer">
-                                <img class="w-full h-full object-cover" data-alt="Main music festival scene" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmo_I9fNg_bHZOig16HXZ39BVkgM4FuVCiUw7ZpDvL-MeMuS3nsoBHwf1diaT82KoL3cFgz8ubilT0MVcZMsZOt9wtUpI5_V3gOgcmX_5YZNHsd7wX_P8P4RO4lsKt3gZkK7y1sd4xyevwGm7HyKr2ufBg5Rr6iiV6aA627hP5YyGow_F64WATn9lWq4fyzxPvirZdKw0pWCGT2gK4DZzYgTwK__MfU4gyJerOhdg5p-KCKwC2CuChLQ">
-                                <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80"></div>
-                                <div class="absolute bottom-6 left-6 text-left">
-                                    <span class="font-label-caps text-label-caps bg-primary text-on-primary px-2 py-1 rounded-sm mb-2 inline-block">Featured</span>
-                                </div>
-                            </div>
+                        <button class="text-on-surface-variant hover:text-primary hover:bg-primary/10 p-1 rounded-full transition-all"><span class="material-symbols-outlined text-[20px]">person_add</span></button>
+                    </div>
+                    <div class="flex items-center justify-between group cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <img src="https://i.scdn.co/image/ab6761610000e5eb5a00969a4698c3132a15fbb0" class="w-10 h-10 rounded-full object-cover">
+                            <span class="font-button-text text-[14px] text-on-surface group-hover:text-primary transition-colors">Arctic Monkeys</span>
                         </div>
-                        <div class="carousel-item absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-out origin-center" data-index="2" style="transform: translateX(300px) scale(0.8) translateZ(-100px); opacity: 0.6; z-index: 1;">
-                            <div class="w-full h-full rounded-xl overflow-hidden relative group">
-                                <img class="w-full h-full object-cover" data-alt="Cyberpunk style outdoor music festival stage, towering LED screens glowing with bright pink and cyan, dark night sky, intense atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBG4yMF06QOq7NMw-j9DCecGYQPWkmxfW4SiqXSfIC4UYMfeESBZnWUQfavyBV3quNEQL14_o9ehjV2-tflgfpWTHI6mL7cfcg_vs-PbTizCLkKm659tNssWdpxKV_WSvWJJ1MkLDSkArPn_W9c0Ex0bJfXVSj1OVuowC1hST02YEOfaXSLbdS6qv0pIIv8aUbiVBHorXaNm509K49pgMuf-ZGebpyVu0rB-X8ENWT5f3aylsbrILARg">
-                                <div class="absolute inset-0 bg-surface/40 group-hover:bg-transparent transition-colors"></div>
-                            </div>
-                        </div>
+                        <button class="text-on-surface-variant hover:text-primary hover:bg-primary/10 p-1 rounded-full transition-all"><span class="material-symbols-outlined text-[20px]">person_add</span></button>
                     </div>
-                    
-                    <button class="absolute right-0 z-20 w-12 h-12 bg-primary/20 backdrop-blur-md rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all shadow-[0_0_15px_rgba(255,0,128,0.4)]" onclick="rotateCarousel(1)">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </button>
                 </div>
-                
-                <div class="text-center mb-stack-lg" id="carousel-info">
-                    <h2 class="font-headline-lg text-headline-lg text-primary tracking-wide drop-shadow-[0_0_10px_rgba(255,0,128,0.5)]">Neon Beat Festival</h2>
-                    <div class="flex items-center justify-center gap-4 mt-2 text-on-surface-variant font-label-caps text-label-caps">
-                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span> Oct 24-26, 2024</span>
-                        <span class="">•</span>
-                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">location_on</span> Neo-Tokyo Arena</span>
-                    </div>
-                    <button class="mt-6 px-8 py-3 bg-primary text-on-primary font-button-text text-button-text rounded-full hover:bg-primary-fixed transition-colors">Get Tickets</button>
-                </div>
-                
-                <div class="w-full max-w-[1200px] mt-stack-lg">
-                    <div class="flex justify-between items-end mb-stack-md border-b-2 border-surface-variant pb-4">
-                        <h3 class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary text-[32px]">graphic_eq</span>Próximos de você
-                        </h3>
-                        <a class="font-button-text text-button-text text-primary hover:text-primary-fixed-dim transition-colors flex items-center gap-1" href="#">
-                            View All <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                        </a>
-                    </div>
+            </div>
 
-                    <!-- INÍCIO DO GRID DE CARDS COM JINJA LOOP -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+            <div>
+                <h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-primary">group</span> Pessoas na sua região
+                </h3>
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between group cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface font-bold">M</div>
+                            <div class="flex flex-col">
+                                <span class="font-button-text text-[14px] text-on-surface group-hover:text-primary transition-colors">Marina Silva</span>
+                                <span class="text-[12px] text-on-surface-variant">Vai a 3 shows em comum</span>
+                            </div>
+                        </div>
+                        <button class="text-on-surface-variant hover:text-primary hover:bg-primary/10 p-1 rounded-full transition-all"><span class="material-symbols-outlined text-[20px]">person_add</span></button>
+                    </div>
+                    <div class="flex items-center justify-between group cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface font-bold">L</div>
+                            <div class="flex flex-col">
+                                <span class="font-button-text text-[14px] text-on-surface group-hover:text-primary transition-colors">Lucas Ferreira</span>
+                                <span class="text-[12px] text-on-surface-variant">Ouve techno e house</span>
+                            </div>
+                        </div>
+                        <button class="text-on-surface-variant hover:text-primary hover:bg-primary/10 p-1 rounded-full transition-all"><span class="material-symbols-outlined text-[20px]">person_add</span></button>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#" class="mt-auto flex items-center justify-center gap-2 px-4 py-2 w-full text-center border border-surface-variant text-on-surface-variant font-button-text text-button-text rounded-md hover:bg-surface-variant/50 transition-colors">
+                Ver todos
+            </a>
+        </aside>
+
+        <!-- DASHBOARD PRINCIPAL -->
+        <main class="flex-1 overflow-x-hidden">
+            <div class="flex flex-col w-full font-body-md text-on-background pb-stack-lg">
+                
+                <div class="relative w-full max-w-[1200px] mx-auto px-container-margin pt-stack-md flex flex-col items-center">
+                    <div class="w-full text-center mb-stack-md">
+                        <h1 class="font-headline-xl text-headline-xl text-primary drop-shadow-[0_0_15px_rgba(255,0,128,0.3)]">Featured Events</h1>
+                        <p class="font-body-md text-body-md text-on-surface-variant mt-base">Shows imperdíveis.</p>
+                    </div>
+                    
+                    <div class="relative w-full h-[500px] flex justify-center items-center overflow-hidden mb-stack-lg" id="carousel-container">
+                        <button class="absolute left-0 z-20 w-12 h-12 bg-primary/20 backdrop-blur-md rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all shadow-[0_0_15px_rgba(255,0,128,0.4)]" onclick="rotateCarousel(-1)">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
                         
-                        {% for artista in artistas %}
-                        <div class="bg-surface-container rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 relative shadow-md hover:shadow-[0_0_30px_rgba(255,0,128,0.15)]">
-                            <div class="h-48 w-full relative overflow-hidden">
-                                <!-- Imagem do Artista -->
-                                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                                     src="{{ artista.images[0].url if artista.images else 'https://via.placeholder.com/400' }}" 
-                                     alt="{{ artista.name }}">
-                                
-                                <!-- Gênero do Artista (se existir) -->
-                                {% if artista.genres %}
-                                <div class="absolute top-4 left-4 bg-background/80 backdrop-blur-sm px-3 py-1 rounded-sm font-label-caps text-label-caps text-primary border border-primary/30 capitalize">
-                                    {{ artista.genres[0] }}
+                        <div class="relative w-[800px] h-[400px] perspective-[1200px]" id="carousel">
+                            <!-- Card 0 (John Lennon) -->
+                            <div class="carousel-item absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-out origin-center" data-index="0" style="transform: translateX(-300px) scale(0.8) translateZ(-100px); opacity: 0.6; z-index: 1;">
+                                <div class="w-full h-full rounded-xl overflow-hidden relative group">
+                                    <img class="w-full h-full object-cover object-top" data-alt="John Lennon" src="https://i.metroimg.com/Y_GqI0VTDXG-CG91gMEuqhF-42QMIPyZMKqTgS6oDzA/w:600/q:85/f:webp/plain/https://images.metroimg.com/2024/02/26201243/John-Lennon-2.jpg">
+                                    <div class="absolute inset-0 bg-surface/40 group-hover:bg-transparent transition-colors"></div>
                                 </div>
-                                {% endif %}
                             </div>
                             
-                            <div class="p-6">
-                                <!-- Nome do Artista -->
-                                <h4 class="font-headline-md text-[24px] font-bold text-on-surface mb-2">{{ artista.name }}</h4>
-                                
-                                <p class="font-body-sm text-body-sm text-on-surface-variant mb-4 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">graphic_eq</span> 
-                                    Popularidade no Spotify: {{ artista.popularity }}%
-                                </p>
-                                
-                                <div class="flex justify-between items-center mt-4">
-                                    <span class="font-button-text text-button-text text-on-surface">Buscando shows...</span>
-                                    <button class="px-4 py-2 bg-primary text-on-primary font-button-text text-button-text rounded-md hover:bg-primary-fixed transition-colors">
-                                        Ver Agenda
-                                    </button>
+                            <!-- Card 1 (Tim Maia) -->
+                            <div class="carousel-item absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-out origin-center" data-index="1" style="transform: translateX(0px) scale(1) translateZ(0px); opacity: 1; z-index: 2; box-shadow: 0 0 40px rgba(255,0,128,0.2);">
+                                <div class="w-full h-full rounded-xl overflow-hidden relative group cursor-pointer">
+                                    <img class="w-full h-full object-cover object-center" data-alt="Tim Maia" src="https://braziljournal.com/wp-content/uploads/2024/03/tim-maia-memoria-857x482.jpg?x85156">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80"></div>
+                                    <div class="absolute bottom-6 left-6 text-left">
+                                        <span class="font-label-caps text-label-caps bg-primary text-on-primary px-2 py-1 rounded-sm mb-2 inline-block">Featured</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Card 2 (Vitão) -->
+                            <div class="carousel-item absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-out origin-center" data-index="2" style="transform: translateX(300px) scale(0.8) translateZ(-100px); opacity: 0.6; z-index: 1;">
+                                <div class="w-full h-full rounded-xl overflow-hidden relative group">
+                                    <img class="w-full h-full object-cover object-top" data-alt="Vitão" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToMKfjTU7_fYYmv8gND3g38oSD3xzH4GjNml8bjjDEQQ&s">
+                                    <div class="absolute inset-0 bg-surface/40 group-hover:bg-transparent transition-colors"></div>
                                 </div>
                             </div>
                         </div>
-                        {% endfor %}
                         
+                        <button class="absolute right-0 z-20 w-12 h-12 bg-primary/20 backdrop-blur-md rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all shadow-[0_0_15px_rgba(255,0,128,0.4)]" onclick="rotateCarousel(1)">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
                     </div>
-                    <!-- FIM DO GRID DE CARDS -->
                     
+                    <div class="text-center mb-stack-lg" id="carousel-info">
+                        <h2 class="font-headline-lg text-headline-lg text-primary tracking-wide drop-shadow-[0_0_10px_rgba(255,0,128,0.5)]">Tim Maia: Baile do Síndico Ao Vivo</h2>
+                        <div class="flex items-center justify-center gap-4 mt-2 text-on-surface-variant font-label-caps text-label-caps">
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span> 15 Nov, 2026</span>
+                            <span class="">•</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary">location_on</span> Auditório Araújo Vianna</span>
+                        </div>
+                        
+                        <a href="https://www.sympla.com.br/" target="_blank" rel="noopener noreferrer" class="mt-6 inline-block px-8 py-3 bg-primary text-on-primary font-button-text text-button-text rounded-full hover:bg-primary-fixed transition-colors shadow-[0_0_20px_rgba(255,0,128,0.3)]">Reservar Fictício</a>
+                    </div>
+                    
+                    <div class="w-full mt-stack-lg">
+                        <div class="flex justify-between items-end mb-stack-md border-b-2 border-surface-variant pb-4">
+                            <h3 class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary text-[32px]">graphic_eq</span>Próximos de você
+                            </h3>
+                        </div>
+
+                        <!-- GRID DE CARDS DOS ARTISTAS -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+                            
+                            {% for artista in artistas %}
+                            <div class="bg-surface-container rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 relative shadow-md hover:shadow-[0_0_30px_rgba(255,0,128,0.15)] flex flex-col">
+                                <div class="h-48 w-full relative overflow-hidden shrink-0">
+                                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                                         src="{{ artista.images[0].url if artista.images else 'https://via.placeholder.com/400' }}" 
+                                         alt="{{ artista.name }}">
+                                    
+                                    {% if artista.genres %}
+                                    <div class="absolute top-4 left-4 bg-background/80 backdrop-blur-sm px-3 py-1 rounded-sm font-label-caps text-label-caps text-primary border border-primary/30 capitalize">
+                                        {{ artista.genres[0] }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="p-6 flex flex-col flex-1">
+                                    <h4 class="font-headline-md text-[24px] font-bold text-on-surface mb-2">{{ artista.name }}</h4>
+                                    
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant mb-4 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[14px]">graphic_eq</span> 
+                                        Popularidade no Spotify: {{ artista.popularity }}%
+                                    </p>
+                                    
+                                    <div class="mt-auto border-t border-surface-variant pt-4">
+                                        {% if artista.has_show %}
+                                            <div class="mb-3 text-body-sm text-on-surface-variant">
+                                                <p class="flex items-center gap-1 mb-1 text-on-surface">
+                                                    <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                                                    <strong>{{ artista.show.data }}</strong> 
+                                                    {% if artista.show.hora %} às {{ artista.show.hora }} {% endif %}
+                                                </p>
+                                                <p class="flex items-center gap-1">
+                                                    <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+                                                    {{ artista.show.local }} ({{ artista.show.cidade }})
+                                                </p>
+                                            </div>
+
+                                            <!-- SEÇÃO: LOGÍSTICA DE TRANSPORTE -->
+                                            <div class="mb-4 p-3 bg-background/50 rounded-lg border border-surface-variant/50">
+                                                <p class="font-label-caps text-label-caps text-on-surface flex items-center gap-1 mb-2">
+                                                    <span class="material-symbols-outlined text-[14px] text-primary">directions_bus</span> Transporte p/ o evento
+                                                </p>
+                                                <div class="flex flex-col gap-1 text-[13px]">
+                                                    <div class="flex justify-between items-center">
+                                                        <span class="text-on-surface-variant">Expresso Viamão > POA</span>
+                                                        <span class="text-primary font-bold">18:30 • 19:15</span>
+                                                    </div>
+                                                    <div class="flex justify-between items-center">
+                                                        <span class="text-on-surface-variant">Carona (App)</span>
+                                                        <span class="text-primary font-bold">19:00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <a href="{{ artista.show.ticket_url }}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 px-4 py-2 w-full text-center bg-primary text-on-primary font-button-text text-button-text rounded-md hover:bg-primary-fixed transition-colors shadow-[0_0_15px_rgba(255,0,128,0.3)]">
+                                                <span class="material-symbols-outlined text-[18px]">local_activity</span>
+                                                Comprar Ingresso
+                                            </a>
+                                        {% else %}
+                                            <div class="flex flex-col gap-3">
+                                                <span class="font-button-text text-button-text text-on-surface-variant opacity-70">Sem shows marcados deste artista.</span>
+                                                <a href="#" class="flex items-center justify-center gap-2 px-4 py-2 w-full text-center border border-primary text-primary font-button-text text-button-text rounded-md hover:bg-primary/20 transition-colors">
+                                                    <span class="material-symbols-outlined text-[18px]">explore</span>
+                                                    Sugerir shows perto
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
-
-    <footer class="w-full bg-surface-container-lowest py-stack-lg mt-stack-lg">
-        <div class="w-full px-container-margin flex flex-col md:flex-row justify-between items-center gap-stack-md text-on-surface-variant text-body-sm">
-            <div class="flex items-center gap-base">
-                <span class="material-symbols-outlined text-primary">potted_plant</span>
-                <span class="font-label-caps text-label-caps">PokeEvent Discoverer</span>
-            </div>
-            <nav class="flex gap-gutter">
-                <a class="hover:text-primary transition-colors" href="#">Privacy</a>
-                <a class="hover:text-primary transition-colors" href="#">Terms</a>
-                <a class="hover:text-primary transition-colors" href="#">Support</a>
-            </nav>
-            <div class="text-body-sm">© 2024 PokéEvents. All rights reserved.</div>
-        </div>
-    </footer>
+            
+            <footer class="w-full bg-surface-container-lowest py-stack-lg mt-stack-lg border-t border-surface-variant">
+                <div class="w-full px-container-margin flex flex-col md:flex-row justify-between items-center gap-stack-md text-on-surface-variant text-body-sm">
+                    <div class="flex items-center gap-base">
+                        <span class="material-symbols-outlined text-primary">potted_plant</span>
+                        <span class="font-label-caps text-label-caps">Show Around Discoverer</span>
+                    </div>
+                    <nav class="flex gap-gutter">
+                        <a class="hover:text-primary transition-colors" href="#">Privacy</a>
+                        <a class="hover:text-primary transition-colors" href="#">Terms</a>
+                        <a class="hover:text-primary transition-colors" href="#">Support</a>
+                    </nav>
+                    <div class="text-body-sm">© 2026 Show Around. All rights reserved.</div>
+                </div>
+            </footer>
+        </main>
+    </div>
 
     <script>
         let currentIndex = 1;
         const items = document.querySelectorAll('.carousel-item');
-        const infoTitles = ['Deep Bass Odyssey', 'Neon Beat Festival', 'Cyber Synth Night'];
+        
+        const infoTitles = [
+            'John Lennon: Hologram Peace Tour', 
+            'Tim Maia: homenagem Ao Vivo', 
+            'Vitão: Acústico Beira-Guaíba'
+        ];
+        
         const titleEl = document.querySelector('#carousel-info h2');
 
         function rotateCarousel(dir) {
@@ -234,21 +338,18 @@
                 item.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, z-index 0s 0.25s';
                 
                 if (index === currentIndex) {
-                    // Center item
                     item.style.transform = 'translateX(0px) scale(1) translateZ(0px)';
                     item.style.opacity = '1';
                     item.style.zIndex = '3';
                     item.style.boxShadow = '0 0 40px rgba(255,0,128,0.2)';
                     item.querySelector('.bg-surface\\/40')?.classList.remove('bg-surface/40');
                 } else if (index === (currentIndex - 1 + items.length) % items.length) {
-                    // Left item
                     item.style.transform = 'translateX(-300px) scale(0.8) translateZ(-100px)';
                     item.style.opacity = '0.4';
                     item.style.zIndex = '1';
                     item.style.boxShadow = 'none';
                     item.querySelector('.absolute.inset-0:not(.bg-gradient-to-t)')?.classList.add('bg-surface/40');
                 } else {
-                    // Right item
                     item.style.transform = 'translateX(300px) scale(0.8) translateZ(-100px)';
                     item.style.opacity = '0.4';
                     item.style.zIndex = '1';
